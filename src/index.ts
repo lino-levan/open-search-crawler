@@ -16,8 +16,9 @@ async function main() {
   await client.connect()
 
   const raw = client.db("opensearch").collection("raw")
+  const images = client.db("opensearch").collection("images")
 
-  const browser = await puppeteer.launch({ headless: false })
+  const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.setExtraHTTPHeaders({
       'accept-language': 'en-US,en;q=0.9,hy;q=0.8'
@@ -28,7 +29,7 @@ async function main() {
     height: 1080,
   })
 
-  let links = ['https://hypercolor.dev']
+  let links = ['https://www.youtube.com']
 
   while(true) {
     try{
@@ -70,6 +71,18 @@ async function main() {
 
       links.shift()
 
+      let imgs: any[] = await page.$$eval('img', images => images.map((i: any) => ({alt: i.alt, src: i.src, width: i.width, height: i.height}))) as any
+
+      imgs = imgs.map((img)=>(
+        {
+          ...img,
+          href: link,
+          title: title,
+          description: description,
+          numLinks: hrefs.length,
+        }
+      ))
+
       await raw.insertOne({
         href: link,
         title: title,
@@ -79,6 +92,10 @@ async function main() {
         screenshot: `data:image/png;base64,${screenshotBuffer.toString('base64url')}`,
         version: "1.2"
       })
+
+      if(imgs.length > 0) {
+        await images.insertMany(imgs)
+      }
     }
     catch(err) {
       console.log(err)

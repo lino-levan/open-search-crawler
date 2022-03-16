@@ -11,5 +11,9 @@ export function processLink(link: string) {
     return null
   }
 
-  return `${url.protocol}//${url.hostname}${url.pathname}`
+  if(url.hostname.includes("youtube.com")) {
+    return link
+  } else {
+    return `${url.protocol}//${url.hostname}${url.pathname}`
+  }
 }
