@@ -1,0 +1,27 @@
+{
+  "name": "open-search-crawler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "dev": "nodemon ./dist",
+    "start": "node ./dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/resize-img": "^2.0.1",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "mongodb": "^4.4.1",
+    "puppeteer-extra": "^3.2.3",
+    "puppeteer-extra-plugin-adblocker": "^2.12.0",
+    "puppeteer-extra-plugin-stealth": "^2.9.0",
+    "resize-img": "^2.0.0"
+  }
+}
