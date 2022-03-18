@@ -71,6 +71,8 @@ async function main() {
 
       links.shift()
 
+      links = Array.from(new Set(links))
+
       let imgs: any[] = await page.$$eval('img', images => images.map((i: any) => ({alt: i.alt, src: i.src, width: i.width, height: i.height}))) as any
 
       imgs = imgs.map((img)=>(
